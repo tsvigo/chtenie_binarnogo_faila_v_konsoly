@@ -19,6 +19,26 @@
 const std::string FILE_PATH = "/home/viktor/my_projects_qt_2/sgenerirovaty_sinapsi/random_sinapsi.bin";
 constexpr size_t NUM_SYNAPSES = 10105;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// NOTE: функции:
+void redirectOutputToFile2(const QString &filePath) {
+    // Открываем файл для записи и очищаем его содержимое
+    FILE *file = freopen(filePath.toStdString().c_str(), "w", stdout);
+    if (!file) {
+        std::cerr << "Failed to redirect stdout to file" << std::endl;
+        return;
+    }
+
+    // Перенаправляем stderr тоже, если нужно
+    file = freopen(filePath.toStdString().c_str(), "w", stderr);
+    if (!file) {
+        std::cerr << "Failed to redirect stderr to file" << std::endl;
+        return;
+    }
+
+    std::cout << "Console output is now redirected to the log file." << std::endl;
+    std::cerr << "Error output is also redirected to the log file." << std::endl;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void readFromFile(std::vector<mpz_class>& list_of_synapses, const QString& filePath) {
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly)) {
@@ -88,9 +108,54 @@ void readFromFile3(std::vector<mpz_class>& list_of_synapses, const std::string& 
     inFile.close();
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void redirectOutputToFile(const QString& logFilePath) {
+    // Открываем файл для записи
+    QFile logFile(logFilePath);
+    if (!logFile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append)) {
+        std::cerr << "Could not open log file for writing: " << logFilePath.toStdString() << std::endl;
+        return;
+    }
+
+    // Перенаправляем std::cout
+    static std::ofstream out(logFilePath.toStdString().c_str(), std::ios::app);
+    std::cout.rdbuf(out.rdbuf());
+
+    // Перенаправляем std::cerr
+    static std::ofstream err(logFilePath.toStdString().c_str(), std::ios::app);
+    std::cerr.rdbuf(err.rdbuf());
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void rewriteTFile(const QString& logFilePath) {
+QString logFilePath4 =
+ "/home/viktor/my_projects_qt_2_build/build-chtenie_binarnogo_faila_v_konsoly-Desktop_Qt_6_8_0-Debug/application.log";
+    // Укажите путь к вашему .log файлу
+
+QFile file(logFilePath4);
+
+// Открыть файл в режиме записи (QIODevice::WriteOnly) и очистить его содержимое
+if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+    qCritical() << "Could not open file for writing:" << file.errorString();
+ //   return -1;
+}
+
+// Создать QTextStream для записи текста в файл
+QTextStream out(&file);
+out << "This is a new log entry." << Qt::endl;
+
+file.close();
+
+qDebug() << "Log file has been overwritten successfully.";
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char *argv[]) {
     QCoreApplication app(argc, argv);
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    QString logFilePath =
+        "/home/viktor/my_projects_qt_2_build/build-chtenie_binarnogo_faila_v_konsoly-Desktop_Qt_6_8_0-Debug/application.log";
+  //  redirectOutputToFile(logFilePath);
+    redirectOutputToFile2(logFilePath);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Пример использования
     std::vector<mpz_class> list_of_synapses(10105);
   QString filePath = "/home/viktor/my_projects_qt_2/sgenerirovaty_sinapsi/random_sinapsi.bin";
@@ -102,8 +167,10 @@ int main(int argc, char *argv[]) {
     //               );
 
     // Выводим прочитанные данные для проверки
+   int i=0;
     for (const auto& num : list_of_synapses) {
-        std::cout << num.get_str() << std::endl;
+       std::cout <<i<<":"<< num.get_str() << std::endl;
+        i++;
     }
 
     return 0;
