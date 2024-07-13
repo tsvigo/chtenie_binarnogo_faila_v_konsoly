@@ -18,8 +18,32 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const std::string FILE_PATH = "/home/viktor/my_projects_qt_2/sgenerirovaty_sinapsi/random_sinapsi.bin";
 constexpr size_t NUM_SYNAPSES = 10105;
+    std::vector<mpz_class> list_of_synapses;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // NOTE: функции:
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+std::vector<mpz_class> readVectorFromFile(const std::string& filename) {
+
+    FILE* inFile = fopen(filename.c_str(), "rb");
+    if (!inFile) {
+        std::cerr << "Error opening file for reading." << std::endl;
+        return list_of_synapses;
+    }
+
+    while (!feof(inFile)) {
+        mpz_class num;
+        if (mpz_inp_raw(num.get_mpz_t(), inFile) == 0) {
+            break; // EOF or error
+        }
+        list_of_synapses.push_back(num);
+    }
+
+    fclose(inFile);
+    return     list_of_synapses;
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void redirectOutputToFile2(const QString &filePath) {
     // Открываем файл для записи и очищаем его содержимое
     FILE *file = freopen(filePath.toStdString().c_str(), "w", stdout);
@@ -154,14 +178,16 @@ int main(int argc, char *argv[]) {
     QString logFilePath =
         "/home/viktor/my_projects_qt_2_build/build-chtenie_binarnogo_faila_v_konsoly-Desktop_Qt_6_8_0-Debug/application.log";
   //  redirectOutputToFile(logFilePath);
-    redirectOutputToFile2(logFilePath);
+
+ redirectOutputToFile2(logFilePath);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Пример использования
     std::vector<mpz_class> list_of_synapses(10105);
   QString filePath = "/home/viktor/my_projects_qt_2/sgenerirovaty_sinapsi/random_sinapsi.bin";
     // Чтение чисел из бинарного файла
   //  std::vector<mpz_class> read_synapses(NUM_SYNAPSES);
-   readFromFile3(list_of_synapses, FILE_PATH);
+  // readFromFile3(list_of_synapses, FILE_PATH);
+  readVectorFromFile(FILE_PATH);
     // readFromFile(list_of_synapses, //FILE_PATH
     //              filePath
     //               );
