@@ -18,7 +18,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const std::string FILE_PATH = "/home/viktor/my_projects_qt_2/sgenerirovaty_sinapsi/random_sinapsi.bin";
 constexpr size_t NUM_SYNAPSES = 10105;
-    std::vector<mpz_class> list_of_synapses;
+std::vector<mpz_class> list_of_synapses(0);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // NOTE: функции:
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -177,12 +177,14 @@ int main(int argc, char *argv[]) {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     QString logFilePath =
         "/home/viktor/my_projects_qt_2_build/build-chtenie_binarnogo_faila_v_konsoly-Desktop_Qt_6_8_0-Debug/application.log";
-  //  redirectOutputToFile(logFilePath);
+    redirectOutputToFile(logFilePath);
 
- redirectOutputToFile2(logFilePath);
+// redirectOutputToFile2(logFilePath);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Пример использования
-    std::vector<mpz_class> list_of_synapses(10105);
+    // std::vector<mpz_class> list_of_synapses(//0
+    //                                      10105
+    //                                      );
   QString filePath = "/home/viktor/my_projects_qt_2/sgenerirovaty_sinapsi/random_sinapsi.bin";
     // Чтение чисел из бинарного файла
   //  std::vector<mpz_class> read_synapses(NUM_SYNAPSES);
