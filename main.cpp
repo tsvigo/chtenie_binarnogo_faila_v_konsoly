@@ -17,6 +17,10 @@
 #include <fstream>
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const std::string FILE_PATH = "/home/viktor/my_projects_qt_2/sgenerirovaty_sinapsi/random_sinapsi.bin";
+// /home/viktor/1_rukoy_GMP/Sprite-0001-m.bmp_result_vector.bin
+
+// const std::string FILE_PATH = //"/home/viktor/1_rukoy_GMP/Sprite-0001-m.bmp_result_vector.bin";
+//     "/home/viktor/my_projects_qt_2/sgenerirovaty_neyroni_GMP/random_numbers.bin";
 constexpr size_t NUM_SYNAPSES = 10105;
 std::vector<mpz_class> list_of_synapses(0);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -200,7 +204,7 @@ int main(int argc, char *argv[]) {
        std::cout <<i<<":"<< num.get_str() << std::endl;
         i++;
     }
-
+  std::cout <<"-----------------------------------------------------------"<< std::endl;
     return 0;
 }
 
